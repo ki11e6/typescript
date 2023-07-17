@@ -25,3 +25,11 @@ only after checking the type then can assign value.
 # never type
 
 never produces a value.
+
+# ts configuration
+
+tsc --watch is for monitoring changes to ts files
+tsc --init is for initialization of ts projects so when compilation all ts files are checked
+
+we can exclude any files if mentioned in the configuration.
+eg: "exclude":["node_modules"] //this is default excluded
