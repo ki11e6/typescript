@@ -17,3 +17,11 @@ it basically give aliases for any combination of types we want.
 # function as type
 
 we can specify what type of arguments and results a function should return
+
+# unknown type
+
+only after checking the type then can assign value.
+
+# never type
+
+never produces a value.

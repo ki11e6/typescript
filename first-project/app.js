@@ -37,9 +37,32 @@ function add(n1, n2) {
 function printResult(num) {
     console.log('Result' + num);
 }
+//callback types
+function addAndHandle(n1, n2, cb) {
+    var result = n1 + n2;
+    cb(result);
+}
 printResult(add(2, 3));
 //function as type using ()=
 var combineValue;
 combineValue = add;
 // combineValue=printResult; //we get error
 console.log(combineValue(8, 9));
+console.log(addAndHandle(11, 12, function (result) {
+    console.log(result);
+}));
+//unknown type
+var userInput;
+var userName;
+userInput = 5;
+userInput = 'Max';
+if (typeof userInput === 'string') {
+    userName = userInput;
+}
+// userName=userInput
+//never type
+function generateError(message, code) {
+    throw { message: message, errorCode: code };
+}
+var result = generateError('an unknown error occurred', 500);
+console.log(result); //this will not give undefined as in case of void but give no value.
