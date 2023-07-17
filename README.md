@@ -33,3 +33,7 @@ tsc --init is for initialization of ts projects so when compilation all ts files
 
 we can exclude any files if mentioned in the configuration.
 eg: "exclude":["node_modules"] //this is default excluded
+
+we can configure where the js files created through outDir
+
+"noEmitOnError": true, /_ Disable emitting files if any type checking errors are reported. _/
