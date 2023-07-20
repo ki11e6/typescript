@@ -56,3 +56,8 @@ scope might required to pass arguments depending on constructor in parent class.
 use getter and setter for encapsulating logic.
 
 use static to call withour creating instance/new
+
+# abstract
+
+this can be used if you want to make classes that must have somethingin common and should implement the methods.
+can only inherit not instatiated.
