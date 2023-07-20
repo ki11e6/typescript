@@ -38,4 +38,21 @@ we can configure where the js files created through outDir
 
 "noEmitOnError": true, /_ Disable emitting files if any type checking errors are reported. _/
 
+"sourceMap": true ,when set to true ts file will be shown in the source in the browser
+
 # class and instance
+
+public
+protected
+private
+readonly
+
+# inheritance
+
+scope should be used before this.
+
+scope might required to pass arguments depending on constructor in parent class.
+
+use getter and setter for encapsulating logic.
+
+use static to call withour creating instance/new
