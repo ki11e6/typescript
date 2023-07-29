@@ -47,11 +47,16 @@ protected
 private
 readonly
 
+class cannot inherit from multiple classes.
+
 # inheritance
 
-scope should be used before this.
+_scope_ should be used before _this_.
 
 scope might required to pass arguments depending on constructor in parent class.
+
+getter and setter are property that execute method.
+so instead of calling as function with arguments passing ,just assign value to the property.
 
 use getter and setter for encapsulating logic.
 
@@ -59,5 +64,20 @@ use static to call withour creating instance/new
 
 # abstract
 
-this can be used if you want to make classes that must have somethingin common and should implement the methods.
-can only inherit not instatiated.
+it is used basically to enforce all extending classes to implement methods or fields from the abstract class.
+eg. if we want all id to be enforced the we can create a abstract class with id as abstract and extend with other classes so it will
+always define id .
+
+# singleton
+
+it is to insure that a class always have one instance.
+for this we make constructor private so only through static method we can create an instance.
+
+# interface
+
+it is used to create structure for objects without creating an instance.
+_implements_ is used to do extent from interface. such so an abject created will only have one class and have multiple interfaces.
+interface is commonly used to share functionality amoung different classes.
+we can have readonly in interface.
+interface is similar to custom _type_ .
+optional properties can be used.
