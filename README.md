@@ -81,3 +81,14 @@ interface is commonly used to share functionality amoung different classes.
 we can have readonly in interface.
 interface is similar to custom _type_ .
 optional properties can be used.
+
+# advanced types
+
+**Intersection Types**<br>
+we can combine two types get intersection of types.<br>
+eg:<br>
+type Combinable = string|number;<br>
+type Number =number|boolean;<br>
+so<br>
+type Universal =Combinable & Number;<br>
+we get get type number as it is common in both types Combinable and Number.<br>
