@@ -110,6 +110,7 @@ const userInputElement = document.getElementById('user-input');
 // const userInputElement = document.getElementById('user-input')! as HTMLInputElement; // this is typcasting to HTMLInputElement
 
 if (userInputElement) {
+  //as is used  for tycasting.
   (userInputElement as HTMLInputElement).value = 'Hi there!';
 }
 
@@ -126,3 +127,15 @@ const errorBag: ErrorContainer = {
   paswd: 'not a valid password',
   username: 'not a valid username',
 };
+
+const fetchedUserData = {
+  id: 'ul',
+  name: 'Max',
+  job: { title: 'CEO', description: 'Master' },
+};
+//this is optional chaining
+console.log(fetchedUserData?.job?.title);
+
+//nullish coalescing
+const userData = undefined || null;
+const storeData = userData ?? 'default';
