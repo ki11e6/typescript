@@ -92,3 +92,21 @@ type Number =number|boolean;<br>
 so<br>
 type Universal =Combinable & Number;<br>
 we get get type number as it is common in both types Combinable and Number.<br>
+
+**Type Casting**
+we can use 'as' for type casting.
+
+**optional chaining**
+its is used if we are not sure that there exists which we trying to fetch . its used in objects.<br>
+its also know as short circuiting inorder not show error but not defined.
+
+**Nullish cohescing**
+?? is used used check if variable is null or undefined and so can provide a default value or better one.
+
+# Generics
+
+Generics are a powerful feature in TypeScript that allows you to create reusable components that can work with a variety of data types rather than just a single one. This means that you can write code that is flexible and scalable, allowing users to consume these components and use their own types.
+
+One of the main advantages of using generics is that it provides type safety without compromising performance or productivity. For example, you can write a generic function that takes in an argument of any type and returns a value of the same type. This allows you to write code that is more flexible and reusable, as you don't have to write separate functions for each data type.
+
+# Decorators
