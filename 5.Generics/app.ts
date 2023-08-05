@@ -37,7 +37,8 @@ const mergedObj = merge({ name: 'Max', hobbies: ['Sports'] }, { age: 30 });
 console.log(mergedObj);
 
 */
-
+//function eg 1
+// structure for length as typescript dont know if length is a field of T
 interface Lengthy {
   length: number;
 }
@@ -54,6 +55,7 @@ function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
 
 console.log(countAndDescribe(['Sports', 'Cooking']));
 
+//function eg 2
 function extractAndConvert<T extends object, U extends keyof T>(
   obj: T,
   key: U
@@ -62,6 +64,8 @@ function extractAndConvert<T extends object, U extends keyof T>(
 }
 
 extractAndConvert({ name: 'Max' }, 'name');
+
+//Generic class example
 
 class DataStorage<T extends string | number | boolean> {
   private data: T[] = [];
@@ -89,7 +93,7 @@ textStorage.removeItem('Max');
 console.log(textStorage.getItems());
 
 const numberStorage = new DataStorage<number>();
-
+//generic class with objects will cause some problems because as they are reference types
 // const objStorage = new DataStorage<object>();
 // const maxObj = {name: 'Max'};
 // objStorage.addItem(maxObj);

@@ -109,4 +109,13 @@ Generics are a powerful feature in TypeScript that allows you to create reusable
 
 One of the main advantages of using generics is that it provides type safety without compromising performance or productivity. For example, you can write a generic function that takes in an argument of any type and returns a value of the same type. This allows you to write code that is more flexible and reusable, as you don't have to write separate functions for each data type.
 
+we can create generic variables,functions and classes.<br>
+generic utilities
+
+- Partial is used to set properties are optional.
+- Readonly is used avoid any modification to the properties.
+
+generic types is used if wannt a fixed type.<br>
+union types are used if wannt a flexible type.
+
 # Decorators
