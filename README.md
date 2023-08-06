@@ -119,3 +119,14 @@ generic types is used if wannt a fixed type.<br>
 union types are used if wannt a flexible type.
 
 # Decorators
+
+@ is used to declare it a decorator.
+Decorators are special kinds of declarations that can be attached to classes, methods, properties, and parameters.<br>
+They allow developers to observe, modify, or replace the behavior of these elements.<br>
+Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.<br>
+They are applied using the “@” symbol, followed by the decorator function’s name.<br>
+Decorators are a way to decorate members of a class, or a class itself, with extra functionality.<br>
+When you apply a decorator to a class or a class member, you are actually calling a function that is going to receive details of what is being decorated,<br>
+and the decorator implementation will then be able to transform the code dynamically, adding extra functionality, and reducing boilerplate code. <br>
+They are a way to have metaprogramming in TypeScript, which is a programming technique that enables the programmer to create code<br>
+that uses other code from the application itself as data.
