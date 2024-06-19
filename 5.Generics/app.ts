@@ -1,111 +1,122 @@
-/*
-GENERIC VAIRABLES
-
-const names:Array =[] //Generic type 'Array<T>' requires 1 type argument(s). so
-const names: Array<string | number> = [];
-names.push('hai');
-const names: Array<string> = []; // string[]
+const names: Array<string> = ['Max', 'Manuel'] // same as string[]
 // names[0].split(' ');
 
-BUILD IN GENERICS
+// const promise: Promise<string> = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve('This is done!');
+//   }, 2000);
+// });
 
-const promise: Promise<number> = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve(10);
-  }, 2000);
-});
+// promise.then((data) => {
+//   data.split(' '); // because of the generic type I tell TS data will be string
+// });
 
-promise.then(data => {
-  // data.split(' ');
-})
+// ---
 
-*/
+// function merge(objA: object, objB: object) {
+//   return Object.assign(objA, objB);
+// }
 
-/*
+// const mergedObj = merge({ name: 'Max' }, { age: 30 });
+// mergedObj.name; // Property 'name' does not exist on type 'object'.
 
-GENERIC FUNCTIONS
+// function merge<T, U>(objA: T, objB: U): T & U
+// function merge<T, U>(objA: T, objB: U) {
+//   return Object.assign(objA, objB);
+// }
 
-function merge<T,U>(objA: T, objB: U){
-    return Object.assign(objA, objB);
-}
+// const mergedObj1 = merge({ name: 'Max' }, { age: 30 });
+const mergedObj1 = merge<{ name: string }, { age: number }>(
+  { name: 'Max' },
+  { age: 30 }
+)
+const mergedObj2 = merge({ name: 'Max', hobbies: ['sport'] }, { age: 30 })
+mergedObj1.name // OK
+mergedObj2.age // OK
+
+// ---
 
 function merge<T extends object, U extends object>(objA: T, objB: U) {
-  return Object.assign(objA, objB);
+  return Object.assign(objA, objB)
 }
 
-const mergedObj = merge({ name: 'Max', hobbies: ['Sports'] }, { age: 30 });
-console.log(mergedObj);
+const mergedObj = merge({ name: 'Max', hobbies: ['sport'] }, { age: 30 })
 
-*/
-//function eg 1
-// structure for length as typescript dont know if length is a field of T
+// ---
+
 interface Lengthy {
-  length: number;
+  length: number
 }
 
 function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
-  let descriptionText = 'Got no value.';
+  let description = 'Got no value.'
   if (element.length === 1) {
-    descriptionText = 'Got 1 element.';
+    description = 'Got 1 element.'
   } else if (element.length > 1) {
-    descriptionText = 'Got ' + element.length + ' elements.';
+    description = 'Got ' + element.length + ' element.'
   }
-  return [element, descriptionText];
+  return [element, description]
 }
 
-console.log(countAndDescribe(['Sports', 'Cooking']));
+console.log(countAndDescribe('Hi there!'))
+console.log(countAndDescribe(['sport', 'cooking']))
+console.log(countAndDescribe([]))
 
-//function eg 2
+// ---
+
 function extractAndConvert<T extends object, U extends keyof T>(
   obj: T,
   key: U
 ) {
-  return 'Value: ' + obj[key];
+  return obj[key]
 }
 
-extractAndConvert({ name: 'Max' }, 'name');
+// extractAndConvert({}, 'name'); // KO – Argument of type '"name"' is not assignable to parameter of type 'never'.
+extractAndConvert({ name: 'Max' }, 'name') // OK
 
-//Generic class example
+// ---
 
 class DataStorage<T extends string | number | boolean> {
-  private data: T[] = [];
+  private data: T[] = []
 
   addItem(item: T) {
-    this.data.push(item);
+    this.data.push(item)
   }
 
   removeItem(item: T) {
-    if (this.data.indexOf(item) === -1) {
-      return;
-    }
-    this.data.splice(this.data.indexOf(item), 1); // -1
+    this.data.splice(this.data.indexOf(item), 1)
   }
 
   getItems() {
-    return [...this.data];
+    return [...this.data]
   }
 }
 
-const textStorage = new DataStorage<string>();
-textStorage.addItem('Max');
-textStorage.addItem('Manu');
-textStorage.removeItem('Max');
-console.log(textStorage.getItems());
+const textStorage = new DataStorage<string>()
+textStorage.addItem('Max')
+textStorage.addItem('Manu')
+textStorage.removeItem('Manu')
+console.log(textStorage.getItems())
 
-const numberStorage = new DataStorage<number>();
-//generic class with objects will cause some problems because as they are reference types
+const numberStorage = new DataStorage<number>()
+numberStorage.addItem(1)
+numberStorage.addItem(2)
+numberStorage.removeItem(3)
+console.log(numberStorage.getItems())
+
 // const objStorage = new DataStorage<object>();
-// const maxObj = {name: 'Max'};
-// objStorage.addItem(maxObj);
-// objStorage.addItem({name: 'Manu'});
-// // ...
-// objStorage.removeItem(maxObj);
+// objStorage.addItem({ name: 'Max' });
+// objStorage.addItem({ name: 'Manu' });
+// //...
+// objStorage.removeItem({ name: 'Manu' }); // problem because objects work with reference
 // console.log(objStorage.getItems());
 
+// ---
+
 interface CourseGoal {
-  title: string;
-  description: string;
-  completeUntil: Date;
+  title: string
+  description: string
+  completeUntil: Date
 }
 
 function createCourseGoal(
@@ -113,13 +124,14 @@ function createCourseGoal(
   description: string,
   date: Date
 ): CourseGoal {
-  let courseGoal: Partial<CourseGoal> = {};
-  courseGoal.title = title;
-  courseGoal.description = description;
-  courseGoal.completeUntil = date;
-  return courseGoal as CourseGoal;
+  let courseGoal: Partial<CourseGoal> = {}
+  courseGoal.title = title
+  courseGoal.description = description
+  courseGoal.completeUntil = date
+  return courseGoal as CourseGoal
 }
 
-const names: Readonly<string[]> = ['Max', 'Anna'];
-// names.push('Manu');
-// names.pop();
+const newNames: Readonly<string[]> = ['Max', 'Anna']
+// newNames.push('Manu'); // KO – Property 'push' does not exist on type 'readonly string[]'.
+
+// ---

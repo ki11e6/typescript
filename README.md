@@ -4,7 +4,7 @@
 
 # Union types
 
-number | string - '|' is useing to present union of types
+number | string - '|' pipe is using to present union of types
 
 # literal types
 
@@ -75,6 +75,7 @@ for this we make constructor private so only through static method we can create
 
 # interface
 
+it is mainly used for object.
 it is used to create structure for objects without creating an instance.
 _implements_ is used to do extent from interface. such so an abject created will only have one class and have multiple interfaces.
 interface is commonly used to share functionality amoung different classes.
@@ -130,3 +131,10 @@ When you apply a decorator to a class or a class member, you are actually callin
 and the decorator implementation will then be able to transform the code dynamically, adding extra functionality, and reducing boilerplate code. <br>
 They are a way to have metaprogramming in TypeScript, which is a programming technique that enables the programmer to create code<br>
 that uses other code from the application itself as data.
+
+# types vs interfaces
+
+_interface_ is mainly used for defining types of objects. but there are limitations like _interface_ can be used to define function types but cannot use _interface_ to store a union type.
+<br>
+
+_interface_ is used when we want to implement class. it can also be used more extending types such that use can use same interface name to add somemore types later to the interface.
