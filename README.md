@@ -36,7 +36,7 @@ eg: "exclude":["node_modules"] //this is default excluded
 
 we can configure where the js files created through outDir
 
-"noEmitOnError": true, /_ Disable emitting files if any type checking errors are reported. _/
+"noEmitOnError": true, /_Disable emitting files if any type checking errors are reported._/
 
 "sourceMap": true ,when set to true ts file will be shown in the source in the browser
 
@@ -138,3 +138,6 @@ _interface_ is mainly used for defining types of objects. but there are limitati
 <br>
 
 _interface_ is used when we want to implement class. it can also be used more extending types such that use can use same interface name to add somemore types later to the interface.
+
+_interface_ can be used to merge two types using extends.
+_type_ can be used to merge using & operator.

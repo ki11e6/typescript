@@ -1,3 +1,23 @@
+type Roles = 'admin' | 'user'
+
+type Employee<T, U, W> = {
+  name: T
+  age: U
+  designation: W
+}
+
+type NewEmployee<T, U, W> = Employee<T, U, W> & {
+  roles: Roles[]
+}
+
+// Creating an object of NewEmployee type
+const newEmployee: NewEmployee<string, number, string> = {
+  name: 'John Doe',
+  age: 30,
+  designation: 'Software Developer',
+  roles: ['admin', 'user'], // Array of Role
+}
+
 const names: Array<string> = ['Max', 'Manuel'] // same as string[]
 // names[0].split(' ');
 
