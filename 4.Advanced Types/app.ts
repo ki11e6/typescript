@@ -13,8 +13,8 @@ type Employee = {
 type ElevatedEmployee = Admin & Employee;
 
 const e1: ElevatedEmployee = {
-  name: 'Max',
-  privileges: ['create-server'],
+  name: "Max",
+  privileges: ["create-server"],
   startDate: new Date(),
 };
 
@@ -25,7 +25,7 @@ type Universal = Combinable & Numeric;
 const u: Universal = 11; //here we can only have numbers as intersection of combinable and numeric is number.
 
 function add(a: Combinable, b: Combinable) {
-  if (typeof a === 'string' || typeof b === 'string') {
+  if (typeof a === "string" || typeof b === "string") {
     //this is called type guard using typeof
     return a.toString() + b.toString();
   }
@@ -35,31 +35,31 @@ function add(a: Combinable, b: Combinable) {
 type UnknownEmployee = Employee | Admin;
 
 function printEmployeeInformation(emp: UnknownEmployee) {
-  console.log('Name: ' + emp.name);
-  if ('privileges' in emp) {
+  console.log("Name: " + emp.name);
+  if ("privileges" in emp) {
     //this is type guard using in .
-    console.log('Privileges: ' + emp.privileges);
+    console.log("Privileges: " + emp.privileges);
   }
-  if ('startDate' in emp) {
-    console.log('Start Date: ' + emp.startDate);
+  if ("startDate" in emp) {
+    console.log("Start Date: " + emp.startDate);
   }
 }
 
-printEmployeeInformation({ name: 'Manu', startDate: new Date() });
+printEmployeeInformation({ name: "Manu", startDate: new Date() });
 
 class Car {
   drive() {
-    console.log('Driving...');
+    console.log("Driving...");
   }
 }
 
 class Truck {
   drive() {
-    console.log('Driving a truck...');
+    console.log("Driving a truck...");
   }
 
   loadCargo(amount: number) {
-    console.log('Loading cargo ...' + amount);
+    console.log("Loading cargo ..." + amount);
   }
 }
 
@@ -80,12 +80,12 @@ useVehicle(v1);
 useVehicle(v2);
 
 interface Bird {
-  type: 'bird'; //discriminated union
+  type: "bird"; //discriminated union
   flyingSpeed: number;
 }
 
 interface Horse {
-  type: 'horse'; //discriminated union
+  type: "horse"; //discriminated union
   runningSpeed: number;
 }
 //discriminated union is used here with type so we can identify what is its type.
@@ -94,24 +94,24 @@ type Animal = Bird | Horse;
 function moveAnimal(animal: Animal) {
   let speed;
   switch (animal.type) {
-    case 'bird':
+    case "bird":
       speed = animal.flyingSpeed;
       break;
-    case 'horse':
+    case "horse":
       speed = animal.runningSpeed;
   }
-  console.log('Moving at speed: ' + speed);
+  console.log("Moving at speed: " + speed);
 }
 
-moveAnimal({ type: 'bird', flyingSpeed: 10 });
+moveAnimal({ type: "bird", flyingSpeed: 10 });
 
 // const userInputElement = <HTMLInputElement>document.getElementById('user-input')!;
-const userInputElement = document.getElementById('user-input');
+const userInputElement = document.getElementById("user-input");
 // const userInputElement = document.getElementById('user-input')! as HTMLInputElement; // this is typcasting to HTMLInputElement
 
 if (userInputElement) {
   //as is used  for tycasting.
-  (userInputElement as HTMLInputElement).value = 'Hi there!';
+  (userInputElement as HTMLInputElement).value = "Hi there!";
 }
 
 //index property
@@ -123,19 +123,19 @@ interface ErrorContainer {
 }
 
 const errorBag: ErrorContainer = {
-  email: 'not a valid email',
-  paswd: 'not a valid password',
-  username: 'not a valid username',
+  email: "not a valid email",
+  paswd: "not a valid password",
+  username: "not a valid username",
 };
 
 const fetchedUserData = {
-  id: 'ul',
-  name: 'Max',
-  job: { title: 'CEO', description: 'Master' },
+  id: "ul",
+  name: "Max",
+  job: { title: "CEO", description: "Master" },
 };
 //this is optional chaining
 console.log(fetchedUserData?.job?.title);
 
 //nullish coalescing
 const userData = undefined || null;
-const storeData = userData ?? 'default';
+const storeData = userData ?? "default";
