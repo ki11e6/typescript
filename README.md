@@ -2,31 +2,34 @@
 
 <img src="images\coreTypes.png"></img>
 
-# Union types
+
+# More detailed documentation is in Summary.md
+
+## Union types
 
 number | string - '|' pipe is using to present union of types
 
-# literal types
+## literal types
 
 lieral is a part of type. Eg. 'hello world' is a string but all strings are not 'hello world'
 
-# type aliases
+## type aliases
 
 it basically give aliases for any combination of types we want.
 
-# function as type
+## function as type
 
 we can specify what type of arguments and results a function should return
 
-# unknown type
+## unknown type
 
 only after checking the type then can assign value.
 
-# never type
+## never type
 
 never produces a value.
 
-# ts configuration
+## ts configuration
 
 tsc --watch is for monitoring changes to ts files
 tsc --init is for initialization of ts projects so when compilation all ts files are checked
@@ -40,7 +43,7 @@ we can configure where the js files created through outDir
 
 "sourceMap": true ,when set to true ts file will be shown in the source in the browser
 
-# class and instance
+## class and instance
 
 public
 protected
@@ -49,7 +52,7 @@ readonly
 
 class cannot inherit from multiple classes.
 
-# inheritance
+## inheritance
 
 _scope_ should be used before _this_.
 
@@ -62,18 +65,18 @@ use getter and setter for encapsulating logic.
 
 use static to call withour creating instance/new
 
-# abstract
+## abstract
 
 it is used basically to enforce all extending classes to implement methods or fields from the abstract class.
 eg. if we want all id to be enforced the we can create a abstract class with id as abstract and extend with other classes so it will
 always define id .
 
-# singleton
+## singleton
 
 it is to insure that a class always have one instance.
 for this we make constructor private so only through static method we can create an instance.
 
-# interface
+## interface
 
 it is mainly used for object.
 it is used to create structure for objects without creating an instance.
@@ -83,7 +86,7 @@ we can have readonly in interface.
 interface is similar to custom _type_ .
 optional properties can be used.
 
-# advanced types
+## advanced types
 
 **Intersection Types**<br>
 we can combine two types get intersection of types.<br>
@@ -104,7 +107,7 @@ its also know as short circuiting inorder not show error but not defined.
 **Nullish cohescing**
 ?? is used used check if variable is null or undefined and so can provide a default value or better one.
 
-# Generics
+## Generics
 
 Generics are a powerful feature in TypeScript that allows you to create reusable components that can work with a variety of data types rather than just a single one. This means that you can write code that is flexible and scalable, allowing users to consume these components and use their own types.
 
@@ -119,7 +122,7 @@ generic utilities
 generic types is used if wannt a fixed type.<br>
 union types are used if wannt a flexible type.
 
-# Decorators
+## Decorators
 
 @ is used to declare it a decorator.
 Decorators are special kinds of declarations that can be attached to classes, methods, properties, and parameters.<br>
@@ -132,7 +135,7 @@ and the decorator implementation will then be able to transform the code dynamic
 They are a way to have metaprogramming in TypeScript, which is a programming technique that enables the programmer to create code<br>
 that uses other code from the application itself as data.
 
-# types vs interfaces
+## types vs interfaces
 
 _interface_ is mainly used for defining types of objects. but there are limitations like _interface_ can be used to define function types but cannot use _interface_ to store a union type.
 <br>
@@ -141,3 +144,5 @@ _interface_ is used when we want to implement class. it can also be used more ex
 
 _interface_ can be used to merge two types using extends.
 _type_ can be used to merge using & operator.
+
+---

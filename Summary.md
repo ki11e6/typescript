@@ -1,6 +1,38 @@
-# TypeScript Basics & Basic Types
+# Table of Contents
 
-## Intro
+
+1. [Generics](#generics)
+2. [Decorators](#decorators)
+3. [Classes](#classes)
+4. [Interfaces](#interfaces)
+5. [Object-oriented Programming (OOP)](#object-oriented-programming-oop)
+6. [Access Modifiers: "private" and "public"](#access-modifiers-private-and-public)
+7. [Shorthand Initialization](#shorthand-initialization)
+8. [Readonly Properties](#readonly-properties)
+9.  [Inheritance](#inheritance)
+10. [Overriding Properties & The "protected" Modifier](#overriding-properties--the-protected-modifier)
+11. [Getters & Setters](#getters--setters)
+12. [Static Methods & Properties](#static-methods--properties)
+13. [Abstract Classes](#abstract-classes)
+14. [Singleton](#singleton-pattern)
+15. [Advanced Types](#advanced-types)
+16. [Interfaces as Function Types](#interfaces-as-function-types)
+17. [Optional Parameters & Properties](#optional-parameters--properties)
+18. [Compiling Interfaces to JavaScript](#compiling-interfaces-to-javascript)
+19. [Function Types & Callbacks](#function-types--callbacks)
+20. [Union Types](#union-types)
+21. [Intersection Types](#intersection-types)
+22. [Type Aliases](#type-aliases)
+23. [Type Assertions](#type-assertions)
+24. [Literal Types](#literal-types)
+25. [Type Guards](#type-guards)
+26. [Discriminated Unions](#discriminated-unions)
+27. [Nullable Types](#nullable-types)
+28. [Type Casting](#type-casting)
+
+---
+
+## TypeScript Basics & Basic Types
 **TypeScript**: A superset of JavaScript that helps prevent problems during development by offering static typing.
 
 ### Key Differences Between JS and TS
