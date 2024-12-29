@@ -379,4 +379,84 @@ function login(u: User | Admin) {
 
 That code would work at runtime.
 ---
+## Declaration files
 
+In TypeScript, files with the `.d.ts` extension are **declaration files**. The `.d` stands for **declaration**, and these files are used to describe the shape of JavaScript code in a way that TypeScript can understand. They provide type definitions for existing JavaScript code or libraries, enabling strong type-checking and IntelliSense support.
+
+### Purpose of `.d.ts` Files
+1. **Type Definitions for JavaScript Libraries**: They provide TypeScript definitions for JavaScript libraries that don’t have built-in TypeScript support. This allows TypeScript to perform type-checking and provide autocomplete features when using those libraries.
+
+2. **Separation of Declaration and Implementation**: When creating a library, you can separate the type declarations (in `.d.ts` files) from the implementation (in `.ts` or `.js` files). This is useful when distributing a package with type definitions for consumers of your library.
+
+3. **Global Type Definitions**: They define types that are globally available throughout a TypeScript project, such as custom global variables or utility types.
+
+### Common Use Cases
+#### 1. **Type Definitions for Libraries**
+If you're using a JavaScript library (e.g., Lodash or jQuery), `.d.ts` files provide type information for these libraries.
+
+Example:
+```typescript
+// lodash.d.ts (provided by DefinitelyTyped)
+declare module "lodash" {
+  export function shuffle<T>(array: T[]): T[];
+}
+```
+
+#### 2. **Declaring Types for Modules**
+You can use `.d.ts` files to declare types for custom modules or third-party libraries without type definitions.
+
+Example: `types.d.ts`
+```typescript
+declare module "my-library" {
+  export function greet(name: string): string;
+}
+```
+
+#### 3. **Global Type Declarations**
+They can define global types or variables for use across your project.
+
+Example: `globals.d.ts`
+```typescript
+declare const API_URL: string;
+```
+
+### Key Characteristics
+- `.d.ts` files do **not contain any executable code**—only type annotations and interfaces.
+- They are generated automatically when compiling TypeScript code with the `--declaration` flag.
+- The TypeScript compiler uses these files to check types but ignores them at runtime.
+
+### Example
+Suppose you have a JavaScript library `mathLib.js`:
+```javascript
+// mathLib.js
+exports.add = function (a, b) {
+  return a + b;
+};
+```
+
+You can create a corresponding `.d.ts` file:
+```typescript
+// mathLib.d.ts
+declare module "mathLib" {
+  export function add(a: number, b: number): number;
+}
+```
+
+Now, you can use this library in a TypeScript file with proper type-checking:
+```typescript
+import { add } from "mathLib";
+
+const result = add(2, 3); // TypeScript knows `add` accepts two numbers and returns a number.
+```
+
+### Automatically Downloaded `.d.ts` Files
+Many libraries already provide `.d.ts` files or have them hosted on [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). You can install these type definitions via npm:
+```bash
+npm install --save-dev @types/library-name
+```
+
+### Summary
+- `.d.ts` files are **type declaration files**.
+- They describe the shape of existing code (JavaScript or otherwise) for TypeScript.
+- Used for type-checking, providing IntelliSense, and separating type definitions from implementation.
+- Contain only type annotations—no runtime code.
