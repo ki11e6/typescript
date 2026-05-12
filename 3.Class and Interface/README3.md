@@ -549,6 +549,150 @@ You only ever have one instance of a singleton class. A singleton class is confi
 
 ---
 
+### Modern Class Features (TS 4.3+ / 4.7+ / 4.9+ / 5.8)
+
+The features below are essentials for new TypeScript code today. Most weren't covered by older course material.
+
+#### ECMAScript `#` private fields vs TS `private`
+
+`#field` is a **JavaScript** feature (ES2022). It is enforced at runtime — accessing `obj.#x` from outside the declaring class is a syntax error at parse time and the field is invisible to `Object.keys`, `for…in`, `JSON.stringify`, and devtools.
+
+```ts
+class Counter {
+  #count = 0;            // truly private
+  bump() { this.#count++; return this.#count; }
+}
+
+const c = new Counter();
+c.bump();                // ok
+// c.#count;             // SyntaxError at parse time
+
+console.log(Object.keys(c));   // []      — # field is non-enumerable
+console.log(JSON.stringify(c)); // {}     — not serialized
+```
+
+TS `private` is a compile-time check only — at runtime the property is a normal public field.
+
+When to pick which:
+- **`#`** when you want true encapsulation, including against people calling your code from plain JS.
+- **`private`** when you just want type-system protection and the cleaner syntax.
+
+TS down-levels `#fields` to a WeakMap-based implementation when `target` is below ES2022 (`target >= ES2015` minimum). `target: ES2022+` emits the native syntax.
+
+#### `override` keyword (TS 4.3)
+
+A subclass method that overrides a parent's should declare `override` so renames in the parent immediately produce errors instead of silently breaking the link.
+
+```ts
+class Department {
+  describe() { console.log('Dept'); }
+}
+
+class IT extends Department {
+  override describe() { console.log('IT Dept'); }
+}
+```
+
+Pair with `tsconfig.json`: `"noImplicitOverride": true` to *require* the keyword on every override.
+
+#### `accessor` auto-accessors (TS 4.9)
+
+`accessor name: string` desugars to a `#` private backing field plus a `get`/`set` pair:
+
+```ts
+class Person {
+  accessor name: string = '';
+}
+
+// equivalent to:
+class PersonDesugared {
+  #name = '';
+  get name() { return this.#name; }
+  set name(v: string) { this.#name = v; }
+}
+```
+
+Primarily designed to pair with Stage-3 decorators — a decorator on an `accessor` can replace any of `{ get, set, init }`. See [chapter 6 — Decorators](../6.Decorators/README6.md).
+
+#### Parameter properties + `--erasableSyntaxOnly`
+
+Parameter properties (`constructor(public id: string)` shorthand) are a TS-only feature with no JS equivalent. They are **banned under `--erasableSyntaxOnly`** (TS 5.8) — which is the flag you'd turn on if you want Node's `--experimental-strip-types` to run your code directly.
+
+```ts
+class Order {
+  // banned under --erasableSyntaxOnly
+  constructor(public id: string, public amount: number) {}
+}
+
+// erasable equivalent
+class OrderErasable {
+  id: string;
+  amount: number;
+  constructor(id: string, amount: number) {
+    this.id = id;
+    this.amount = amount;
+  }
+}
+```
+
+If you're shipping a library that needs to be erasable, write fields out longhand.
+
+#### `strictPropertyInitialization`
+
+Part of the `strict` family. Class fields must be either initialised or definitely assigned in the constructor; otherwise the compiler errors.
+
+```ts
+class User {
+  name: string;          // ❌ Property 'name' has no initializer …
+  age = 0;               // ✅ has initializer
+  email!: string;        // ✅ definite-assignment assertion — "I'll set this later"
+  constructor(name: string) { this.name = name; }   // also valid
+}
+```
+
+The `!` assertion is the right tool when a framework (NestJS, dependency injection, ORM) populates the field outside the constructor.
+
+#### `useDefineForClassFields`
+
+Default `true` when `target >= ES2022` (since TS 4.7). Aligns class field semantics with the ECMAScript spec — fields are installed with `[[Define]]` (like `Object.defineProperty`) instead of `[[Set]]`. The visible difference is when a subclass field shadows a getter/setter in the base — the new semantics make the field win.
+
+Most modern code wants this on. Old decorator/property frameworks (legacy `experimentalDecorators` based) may need `false` for compatibility.
+
+---
+
+### Interface — extra notes
+
+Two facts worth knowing alongside the basics below:
+
+**`implements` doesn't check member visibility.** A class implementing an interface can still mark its own properties `private` — only that class's *implementation* needs them. The interface itself is always describing the public-shape contract.
+
+```ts
+interface Identifiable { id: string }
+
+class Token implements Identifiable {
+  constructor(private secret: string, public id: string) {}
+  // satisfies Identifiable even though `secret` is private
+}
+```
+
+**Interface declaration merging.** Two `interface X` declarations in the same scope merge into one. This is how you augment ambient types like `Window` or `Express.Request`:
+
+```ts
+// global augmentation
+declare global {
+  interface Window { __MY_APP_VERSION__: string }
+}
+
+// module augmentation
+declare module 'express-serve-static-core' {
+  interface Request { user?: { id: string } }
+}
+```
+
+Same-named function members become **overloads**; same-named property members must have **compatible types**.
+
+---
+
 ### A First Interface
 
 In its simple version, an interface describes the structure (and the the concrete values) of an object. We can use to describe how the object should look like. We don't assign any value to it. We can use it as a type to type check for object which have to get that structure.
