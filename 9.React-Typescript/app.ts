@@ -75,14 +75,19 @@ creds = {
 }
 
 class AuthCredentials implements Credentials {
-  email: string
-  password: string
-  userName: string
+  // definite-assignment assertion (!): set externally, not in constructor.
+  email!: string
+  password!: string
+  userName!: string
 }
 
-function login(credentials: Credentials) {}
+function login(_credentials: Credentials) {}
 
-login(new AuthCredentials())
+const ac = new AuthCredentials()
+ac.email = 'a@example.com'
+ac.password = 'pw'
+ac.userName = 'me'
+login(ac)
 
 // type Admin = {
 //   permissions: string[]

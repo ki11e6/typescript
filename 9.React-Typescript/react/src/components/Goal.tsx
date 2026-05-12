@@ -1,15 +1,13 @@
-// import { PropsWithChildren } from "react"
+import type { ReactNode } from 'react'
 
-// type GoalProps = PropsWithChildren<{
-//   id: string
-//   title: string
-//   description: string
-// }>
+export type GoalProps = {
+  id: string | number
+  title: string
+  description: string
+  children?: ReactNode
+}
 
-// const Goal = ({ id, title, description, children }: GoalProps) => {
-// const Goal = ({ id, title, description, children }: GoalProps) => {
-const Goal: React.FC<GoalProps> = ({ id, title, description, children }) => {
-
+function Goal({ id, title, description, children }: GoalProps) {
   return (
     <article>
       {children}
