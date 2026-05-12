@@ -38,6 +38,16 @@ In TypeScript, you work with types like `string` or `number`.
 **Important**: It is `string` and `number` (etc.), NOT `String`, `Number` (etc.).
 **The core primitive types in TypeScript are all lowercase!**
 
+The full list of JS-level primitives, all spelled lowercase:
+
+- `string`
+- `number`
+- `boolean`
+- `bigint` — arbitrarily large integers: `100n`, `BigInt("1234")`
+- `symbol` — unique value identifiers from `Symbol("k")`
+- `null`
+- `undefined`
+
 ---
 
 ### Type Inference
@@ -217,6 +227,44 @@ person.role.push('admin'); // Shouldn't be allowed
 person.role[1] = 10; // // Shouldn't be allowed
 ```
 
+> **Note**: `Array.prototype.push` is technically allowed on tuples — TS doesn't catch it. Use `readonly` tuples (below) for full safety.
+
+#### Readonly tuples
+
+```ts
+const point: readonly [number, number] = [1, 2];
+// point.push(3);    // ❌ Property 'push' does not exist on type 'readonly [number, number]'
+// point[0] = 99;    // ❌ Cannot assign to '0' because it is a read-only property
+```
+
+#### Labeled tuples (TS 4.0+)
+
+Labels are pure documentation — they don't appear at runtime, but they show up in editor tooltips and signature help:
+
+```ts
+type Interval = [start: number, end: number];
+
+function spread(...args: Interval) { return args[1] - args[0]; }
+spread(1, 10);
+```
+
+Since TS 5.2, labels can be **mixed** with unlabeled positions: `[first: T, T]` is now valid.
+
+#### Variadic tuple types (TS 4.0+)
+
+Tuple types can use rest elements anywhere — not just at the end:
+
+```ts
+type Concat<A extends readonly unknown[], B extends readonly unknown[]> = [...A, ...B];
+type C = Concat<[1, 2], [3, 4]>;   // [1, 2, 3, 4]
+
+function callIt<T extends unknown[], R>(fn: (...args: T) => R, ...args: T): R {
+  return fn(...args);
+}
+```
+
+See [chapter 5 — Generics](../5.Generics/README5.md#variadic-tuple-types-ts-40) for more.
+
 ---
 
 ### Working with Enums
@@ -275,6 +323,61 @@ enum Role {
   AUTHOR = 'AUTHOR',
 }
 ```
+
+#### Modern alternative: `as const` + union type
+
+Many TypeScript codebases now **avoid `enum` entirely** in favor of a frozen object plus a derived union type. Reasons:
+
+- Numeric `enum`s create **bidirectional** reverse mappings at runtime (`Role[0] === "ADMIN"`), which inflates bundle size.
+- `const enum` is **incompatible** with `--isolatedModules` across file boundaries (Vite, esbuild, swc, Babel) — see [chapter 1.1 §isolatedModules](README1.1.md#isolatedmodules).
+- `enum` is **banned by `--erasableSyntaxOnly`** (TS 5.8), so it won't run under Node's `--experimental-strip-types`.
+
+The idiomatic replacement:
+
+```ts
+const Role = {
+  ADMIN: 'admin',
+  READ_ONLY: 'read-only',
+  AUTHOR: 'author',
+} as const;
+
+type Role = (typeof Role)[keyof typeof Role];   // "admin" | "read-only" | "author"
+
+function setRole(r: Role) { /* … */ }
+setRole(Role.ADMIN);   // ✅
+// setRole("hacker");  // ❌
+```
+
+You get the same call-site ergonomics with cleaner emit, no reverse mapping, and full compatibility with type-stripping toolchains. Keep `enum` only if you specifically need its runtime value mapping or are working in a codebase that already standardises on it.
+
+---
+
+### `as const` assertions
+
+`as const` is the "make this expression as narrow and immutable as possible" operator. It does three things at once:
+
+1. Literal values stay as their **literal type** (`"hello"` instead of `string`, `42` instead of `number`).
+2. Arrays/objects become **`readonly`** at every depth.
+3. `Array<T>` becomes a **tuple** of literal types.
+
+```ts
+const a = 'red';                    // a: "red"  (let would widen to string)
+const xs = [1, 2, 3] as const;      // xs: readonly [1, 2, 3]
+const cfg = { mode: 'dev', port: 3000 } as const;
+// cfg: { readonly mode: 'dev'; readonly port: 3000 }
+```
+
+Combine with `typeof` + `keyof` to derive types from constants:
+
+```ts
+const colors = ['red', 'green', 'blue'] as const;
+type Color = (typeof colors)[number];   // "red" | "green" | "blue"
+
+const status = { idle: 0, busy: 1, done: 2 } as const;
+type StatusKey = keyof typeof status;   // "idle" | "busy" | "done"
+```
+
+For the validate-without-widening pattern (`as const satisfies T`), see [chapter 4 — `satisfies`](../4.Advanced%20Types/README4.md#satisfies-ts-49).
 
 ---
 
