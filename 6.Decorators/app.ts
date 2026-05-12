@@ -1,344 +1,185 @@
-// function Logger(constructor: Function) {
-//   console.log('Logging...');
-//   console.log(constructor);
-// }
+// TypeScript 5.0+ Stage-3 ECMAScript decorators.
+// tsconfig must NOT have "experimentalDecorators": true.
+// Recommended: "target": "ES2022", "useDefineForClassFields": true,
+//              "lib": ["ES2022", "DOM", "ESNext.Decorators"].
 
-// @Logger
-// class Person {
-//   name = 'Max';
+// Polyfill Symbol.metadata for runtimes that don't define it yet.
+(Symbol as any).metadata ??= Symbol.for('Symbol.metadata')
 
-//   constructor() {
-//     console.log('Creating person object...');
-//   }
-// }
+// ---------------------------------------------------------------------------
+// 1. Class decorator + factory
+// ---------------------------------------------------------------------------
 
-// const pers = new Person();
-// console.log(pers);
-
-// ---
-
-// function Logger(logString: string) {
-//   return function (constructor: Function) {
-//     console.log(logString);
-//     console.log(constructor);
-//   };
-// }
-
-// @Logger('LOGGING - PERSON')
-// class Person {
-//   name = 'Max';
-
-//   constructor() {
-//     console.log('Creating person object...');
-//   }
-// }
-
-// const pers = new Person();
-// console.log(pers);
-
-// ---
-
-// function withTemplate(template: string, hookId: string) {
-//   return function (constructor: any) {
-//     const hookEl = document.getElementById(hookId);
-//     const p = new constructor();
-//     if (hookEl) {
-//       hookEl.innerHTML = template;
-//       hookEl.querySelector('h1')!.textContent = p.name;
-//     }
-//   };
-// }
-
-// function Logger(logString: string) {
-//   return function (constructor: Function) {
-//     console.log(logString);
-//     console.log(constructor);
-//   };
-// }
-
-// @Logger('LOGGING - PERSON')
-// @withTemplate('<h1>My Person Class</h1>', 'app')
-// class Person {
-//   name = 'Max';
-
-//   constructor() {
-//     console.log('Creating person object...');
-//   }
-// }
-
-// const pers = new Person();
-// console.log(pers);
-
-// ---
-
-// // property / field decorator
-// function Log(target: any, propertyName: string | Symbol) {
-//   console.log('Property decorator!');
-//   console.log(target, propertyName);
-// }
-
-// // accessor decorator
-// function Log2(
-//   target: any,
-//   name: string | Symbol,
-//   descriptor: PropertyDescriptor,
-// ) {
-//   console.log('Accessor decorator!');
-//   console.log(target);
-//   console.log(name);
-//   console.log(descriptor);
-// }
-
-// // method decorator
-// function Log3(
-//   target: any,
-//   name: string | Symbol,
-//   descriptor: PropertyDescriptor,
-// ) {
-//   console.log('Method decorator!');
-//   console.log(target);
-//   console.log(name);
-//   console.log(descriptor);
-// }
-
-// // parameter decorator
-// function Log4(target: any, name: string | Symbol, position: number) {
-//   console.log('Parameter decorator!');
-//   console.log(target);
-//   console.log(name);
-//   console.log(position);
-// }
-
-// class Product {
-//   @Log
-//   title: string;
-//   private _price: number;
-
-//   @Log2
-//   set price(val: number) {
-//     if (val > 0) {
-//       this._price = val;
-//     } else {
-//       throw new Error('Invalid price – should be positive!');
-//     }
-//   }
-
-//   constructor(t: string, p: number) {
-//     this.title = t;
-//     this._price = p;
-//   }
-
-//   @Log3
-//   getPriceWithTax(@Log4 tax: number) {
-//     return this._price * (1 + tax);
-//   }
-// }
-
-// ---
-
-// function withTemplate(template: string, hookId: string) {
-//   return function <T extends { new (...args: any[]): { name: string } }>(
-//     originalConstructor: T,
-//   ) {
-//     return class extends originalConstructor {
-//       constructor(..._: any[]) {
-//         super();
-//         console.log('Rendering template');
-//         const hookEl = document.getElementById(hookId);
-//         if (hookEl) {
-//           hookEl.innerHTML = template;
-//           hookEl.querySelector('h1')!.textContent = this.name;
-//         }
-//       }
-//     };
-//   };
-// }
-
-// function Logger(logString: string) {
-//   return function (constructor: Function) {
-//     console.log(logString);
-//     console.log(constructor);
-//   };
-// }
-
-// @Logger('LOGGING - PERSON')
-// @withTemplate('<h1>My Person Class</h1>', 'app')
-// class Person {
-//   name = 'Max';
-
-//   constructor() {
-//     console.log('Creating person object...');
-//   }
-// }
-
-// const pers = new Person();
-// console.log(pers);
-
-// ---
-
-// property / field decorator
-function Log(target: any, propertyName: string | Symbol) {
-  console.log('Property decorator!')
-  console.log(target, propertyName)
+function logged(prefix: string) {
+  return function <C extends abstract new (...a: any[]) => any>(
+    value: C,
+    ctx: ClassDecoratorContext<C>
+  ): C {
+    console.log(`${prefix}: ${String(ctx.name)}`)
+    return value
+  }
 }
 
-// accessor decorator
-function Log2(
-  target: any,
-  name: string | Symbol,
-  descriptor: PropertyDescriptor
+// Class decorator returning a subclass to inject extra behaviour.
+function withTimestamp<C extends new (...a: any[]) => object>(
+  value: C,
+  _ctx: ClassDecoratorContext<C>
 ) {
-  console.log('Accessor decorator!')
-  console.log(target)
-  console.log(name)
-  console.log(descriptor)
+  return class extends value {
+    createdAt = new Date()
+  }
 }
 
-// method decorator
-function Log3(
-  target: any,
-  name: string | Symbol,
-  descriptor: PropertyDescriptor
+@logged('LOG')
+@withTimestamp
+class Person {
+  constructor(public name: string) {}
+}
+
+const p = new Person('Max')
+console.log(p.name, (p as any).createdAt)
+
+// ---------------------------------------------------------------------------
+// 2. Method decorator: @logMethod
+// ---------------------------------------------------------------------------
+
+function logMethod<This, A extends any[], R>(
+  fn: (this: This, ...a: A) => R,
+  ctx: ClassMethodDecoratorContext<This, (this: This, ...a: A) => R>
 ) {
-  console.log('Method decorator!')
-  console.log(target)
-  console.log(name)
-  console.log(descriptor)
+  const name = String(ctx.name)
+  return function (this: This, ...args: A): R {
+    console.log(`-> ${name}`, args)
+    const result = fn.apply(this, args)
+    console.log(`<- ${name}`, result)
+    return result
+  }
 }
 
-// parameter decorator
-function Log4(target: any, name: string | Symbol, position: number) {
-  console.log('Parameter decorator!')
-  console.log(target)
-  console.log(name)
-  console.log(position)
+class Calculator {
+  @logMethod
+  add(a: number, b: number) {
+    return a + b
+  }
 }
 
-class Product {
-  @Log
-  title: string
-  private _price: number
+new Calculator().add(2, 3)
 
-  @Log2
-  set price(val: number) {
-    if (val > 0) {
-      this._price = val
-    } else {
-      throw new Error('Invalid price – should be positive!')
+// ---------------------------------------------------------------------------
+// 3. addInitializer-based @bind (Stage-3 replacement for legacy @Autobind)
+// ---------------------------------------------------------------------------
+
+function bind<This, V extends (this: This, ...a: any[]) => any>(
+  _value: V,
+  ctx: ClassMethodDecoratorContext<This, V>
+) {
+  if (ctx.private) throw new Error('@bind does not support private methods')
+  ctx.addInitializer(function (this: This) {
+    ;(this as any)[ctx.name] = (this as any)[ctx.name].bind(this)
+  })
+}
+
+class Printer {
+  message = 'This works!'
+
+  @bind
+  show() {
+    console.log(this.message)
+  }
+}
+
+const printer = new Printer()
+// Stays bound even when detached:
+const detached = printer.show
+detached()
+
+// ---------------------------------------------------------------------------
+// 4. Auto-accessor decorator: @clamp for read/write validation
+// ---------------------------------------------------------------------------
+
+function clamp(min: number, max: number) {
+  return function <This>(
+    target: ClassAccessorDecoratorTarget<This, number>,
+    _ctx: ClassAccessorDecoratorContext<This, number>
+  ): ClassAccessorDecoratorResult<This, number> {
+    const pin = (v: number) => Math.max(min, Math.min(max, v))
+    return {
+      set(v) {
+        target.set.call(this, pin(v))
+      },
+      init(v) {
+        return pin(v)
+      },
     }
   }
-
-  constructor(t: string, p: number) {
-    this.title = t
-    this._price = p
-  }
-
-  @Log3
-  getPriceWithTax(@Log4 tax: number) {
-    return this._price * (1 + tax)
-  }
 }
 
-// ---
-
-// function Autobind(_: any, _2: string | Symbol, descriptor: PropertyDescriptor) {
-//   const originalMethod = descriptor.value;
-//   const adjDescriptor: PropertyDescriptor = {
-//     configurable: true,
-//     enumerable: false,
-//     get() {
-//       const boundFn = originalMethod.bind(this);
-//       return boundFn;
-//     },
-//   };
-//   return adjDescriptor;
-// }
-
-// class Printer {
-//   message = 'This works!';
-
-//   @Autobind
-//   showMessage() {
-//     console.log(this.message);
-//   }
-// }
-
-// const p = new Printer();
-
-// const button = document.querySelector('button');
-// button?.addEventListener('click', p.showMessage);
-
-// ---
-
-interface ValidatorConfig {
-  [property: string]: {
-    [validatableProp: string]: string[] // e.g. ['required', 'positive']
-  }
+class Volume {
+  @clamp(0, 100) accessor level = 50
 }
 
-const registeredValidators: ValidatorConfig = {}
+const vol = new Volume()
+vol.level = 9999
+console.log(vol.level) // 100
 
-function Required(target: any, propName: string) {
-  registeredValidators[target.constructor.name] = {
-    ...registeredValidators[target.constructor.name],
-    [propName]: ['required'],
-  }
-}
+// ---------------------------------------------------------------------------
+// 5. Decorator metadata (TS 5.2) — replaces the legacy validators registry
+// ---------------------------------------------------------------------------
 
-function PositiveNumber(target: any, propName: string) {
-  registeredValidators[target.constructor.name] = {
-    ...registeredValidators[target.constructor.name],
-    [propName]: ['positive'],
-  }
-}
-function validate(obj: any) {
-  const objValidatorConfig = registeredValidators[obj.constructor.name]
-  if (!objValidatorConfig) {
-    return true
-  }
+const VALIDATORS = Symbol('validators')
+type Rule = (value: unknown) => boolean
 
-  let isValid = true
-  for (const prop in objValidatorConfig) {
-    for (const validator of objValidatorConfig[prop]) {
-      switch (validator) {
-        case 'required':
-          isValid = isValid && !!obj[prop]
-          break
-        case 'positive':
-          isValid = isValid && obj[prop] > 0
-          break
-      }
+// Factory is non-generic so the returned decorator can stay polymorphic
+// over `This` and `V` at every application site.
+function check(rule: Rule, ruleName: string) {
+  return function <This, V>(
+    target: ClassAccessorDecoratorTarget<This, V>,
+    ctx: ClassAccessorDecoratorContext<This, V>
+  ): ClassAccessorDecoratorResult<This, V> {
+    const map = (ctx.metadata[VALIDATORS] ??= {}) as Record<
+      string | symbol,
+      string[]
+    >
+    ;(map[ctx.name] ??= []).push(ruleName)
+
+    return {
+      set(v) {
+        if (!rule(v)) throw new Error(`${String(ctx.name)} failed: ${ruleName}`)
+        target.set.call(this, v)
+      },
+      init(v) {
+        if (!rule(v)) throw new Error(`${String(ctx.name)} failed: ${ruleName}`)
+        return v
+      },
     }
   }
-  return isValid
 }
+
+const Required = check((v) => v != null && v !== '', 'required')
+const Positive = check(
+  (v) => typeof v === 'number' && v > 0,
+  'positive'
+)
 
 class Course {
-  @Required
-  title: string
-  @PositiveNumber
-  price: number
+  @Required accessor title: string = ''
+  @Positive accessor price: number = 1
 
-  constructor(t: string, p: number) {
-    this.title = t
-    this.price = p
+  constructor(title: string, price: number) {
+    this.title = title
+    this.price = price
   }
 }
 
-const courseForm = document.querySelector('form')!
+try {
+  new Course('TS in depth', 49)
+  new Course('', 49) // throws
+} catch (err) {
+  console.log('expected:', (err as Error).message)
+}
 
-courseForm.addEventListener('submit', (event) => {
-  event.preventDefault()
-  const titleEl = document.getElementById('title') as HTMLInputElement
-  const priceEl = document.getElementById('price') as HTMLInputElement
-
-  const title = titleEl.value
-  const price = +priceEl.value
-
-  const createdCourse = new Course(title, price)
-  if (!validate(createdCourse)) {
-    alert('Invalid input, please try again!')
-    return
-  }
-  console.log(createdCourse)
-})
+// Read the metadata back at runtime:
+const meta = (Course as unknown as { [Symbol.metadata]?: DecoratorMetadata })[
+  Symbol.metadata!
+]
+console.log('Course validators:', meta?.[VALIDATORS])
