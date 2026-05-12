@@ -8,8 +8,8 @@
 - **O(n) Linear** - Applies to `for` loops or `while` loops iterating through `n` items.
 - **O(n log(n)) Log Linear** - Usually applies to sorting operations.
 - **O(n²) Quadratic** - Every element in a collection needs to be compared to every other element (e.g., two nested loops).
-- **O(2ⁿ) Exponential** - Recursive algorithms solving a problem of size `N`.
-- **O(n!) Factorial** - Adding a loop for every element.
+- **O(2ⁿ) Exponential** - Recursion that branches multiple times per call without memoization (e.g., naive Fibonacci: `T(n) = T(n−1) + T(n−2)`). Note: not all recursion is exponential — merge sort is O(n log n) and binary search is O(log n). The complexity follows from the recurrence relation (see the [Master Theorem](https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms))).
+- **O(n!) Factorial** - Algorithms generating all permutations of an input (e.g., brute-force traveling salesman).
 
 ### Notes
 - Iterating through half a collection is still **O(n)**.

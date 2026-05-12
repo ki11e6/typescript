@@ -80,10 +80,14 @@ const person = {
 };
 
 // We're copying the pointer/reference of the person object in memory to this copiedPerson constant
-const copiedPersonShallow = person;
+const copiedPersonReference = person;
 
-// To create a real copy
-const copiedPersonDeep = { ...person };
+// Shallow copy — top-level fields are copied, but nested objects/arrays still share references
+// with the original. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+const copiedPersonShallow = { ...person };
+
+// For an actual deep copy, use structuredClone() (Node 17+, all modern browsers)
+const copiedPersonDeep = structuredClone(person);
 ```
 
 ---
@@ -102,9 +106,14 @@ console.log(addedNumbers);
 Note: `push` is working in the same way with the rest parameter.
 
 ```ts
-// you could also use for tuple
-const add = (...numbers: number[number, number, number]) => {
+// You can also type the rest parameter as a fixed-length tuple
+const add = (...numbers: [number, number, number]) => {
   return numbers.reduce((acc, num) => acc + num, 0);
+};
+
+// Or as a variadic tuple (TS 4.0+) — first param typed separately, rest are numbers
+const addLabeled = (first: number, ...rest: [number, ...number[]]) => {
+  return rest.reduce((acc, num) => acc + num, first);
 };
 ```
 

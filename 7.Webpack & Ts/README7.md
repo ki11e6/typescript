@@ -140,7 +140,9 @@ yarn add clean-webpack-plugin -D
 
 ```js
 const path = require('path');
-const CleanPlugin = require('clean-webpack-plugin');
+// clean-webpack-plugin v2+ is a named export — destructure it.
+// See https://github.com/johnagan/clean-webpack-plugin
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -148,8 +150,13 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    // Webpack 5.20+ has built-in cleaning — usually you can drop the plugin entirely.
+    // https://webpack.js.org/configuration/output/#outputclean
+    clean: true,
   },
-  devtool: 'none',
+  // Webpack 5: use `false` to disable source maps; the string 'none' is invalid.
+  // https://webpack.js.org/configuration/devtool/
+  devtool: false,
   module: {
     rules: [
       {
@@ -162,6 +169,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
-  plugins: [new CleanPlugin.CleanWebpackPlugin()],
+  plugins: [new CleanWebpackPlugin()],
 };
 ```
+
+> **Note (Webpack 5+):** `output.clean: true` replaces `clean-webpack-plugin` for most use cases — only include the plugin if you need its advanced glob/dry-run options.

@@ -1,38 +1,40 @@
-class HashTable {
-  private dataMap: Array<any>;
+type Bucket<K, V> = Array<[K, V]>;
+
+class HashTable<K extends string | number, V> {
+  private dataMap: Array<Bucket<K, V> | undefined>;
+
   constructor(size: number = 7) {
     this.dataMap = new Array(size);
   }
 
-  _hash(key: string) {
+  private _hash(key: K): number {
     let hash = 0;
-    for (const char of key) {
+    const s = String(key);
+    for (const char of s) {
       hash = (hash + char.charCodeAt(0) * 23) % this.dataMap.length;
     }
     return hash;
   }
 
-  set(key: string, value: any) {
-    let index = this._hash(key);
-    !this.dataMap[index] && (this.dataMap[index] = []);
-    this.dataMap[index].push([key, value]);
+  set(key: K, value: V): this {
+    const index = this._hash(key);
+    const bucket = this.dataMap[index] ?? (this.dataMap[index] = []);
+    bucket.push([key, value]);
     return this;
   }
 
-  get(key: string) {
-    let index = this._hash(key);
-    if (this.dataMap[index]) {
-      for (let i = 0; i < this.dataMap[index].length; i++) {
-        if (this.dataMap[index][i][0] === key) {
-          return this.dataMap[index][i][1];
-        }
-      }
+  get(key: K): V | undefined {
+    const index = this._hash(key);
+    const bucket = this.dataMap[index];
+    if (!bucket) return undefined;
+    for (const [k, v] of bucket) {
+      if (k === key) return v;
     }
     return undefined;
   }
 }
 
-let newHashTable = new HashTable();
+const newHashTable = new HashTable<string, number>();
 newHashTable.set("hello", 1);
 newHashTable.set("world", 2);
 newHashTable.set("hi", 45);

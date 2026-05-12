@@ -1,6 +1,6 @@
 # TypeScript core type
 
-<img src="images\coreTypes.png"></img>
+<img src="images/coreTypes.png"></img>
 
 
 # More detailed documentation is in Summary.md
@@ -27,7 +27,7 @@ only after checking the type then can assign value.
 
 ## never type
 
-never produces a value.
+`never` represents values which are never observed — used as the return type of functions that always throw or never return (infinite loop), and as the residual type in exhaustive checks. No type is assignable to `never` (except `never` itself). See the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#never).
 
 ## ts configuration
 

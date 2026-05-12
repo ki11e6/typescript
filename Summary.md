@@ -2011,7 +2011,10 @@ function Required(target: any, propName: string) {
   registeredValidators[target.constructor.name] = {
     ...registeredValidators[target.constructor.name],
     [propName]: [
-      ...(registeredValidators[target.constructor.name][propName] || []),
+      // optional chaining is needed because on the FIRST registration
+      // `registeredValidators[target.constructor.name]` is undefined,
+      // so `undefined[propName]` would throw before `|| []` runs.
+      ...(registeredValidators[target.constructor.name]?.[propName] || []),
       'required',
     ],
   };
@@ -2021,9 +2024,7 @@ function PositiveNumber(target: any, propName: string) {
   registeredValidators[target.constructor.name] = {
     ...registeredValidators[target.constructor.name],
     [propName]: [
-      ...(
-
-registeredValidators[target.constructor.name][propName] || []),
+      ...(registeredValidators[target.constructor.name]?.[propName] || []),
       'positive',
     ],
   };
