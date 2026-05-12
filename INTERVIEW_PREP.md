@@ -1030,6 +1030,62 @@ All version-specific claims above were cross-checked against the official TypeSc
 - Do's and Don'ts — https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html
 - type-challenges practice repo — https://github.com/type-challenges/type-challenges
 
+## Interview-Question Research Sources (2025–2026)
+
+The "Most Frequently Asked" section was compiled from these aggregators and primary resources:
+
+**Aggregators / question lists**
+- DataCamp — Top 40 TypeScript Interview Questions 2026 — https://www.datacamp.com/blog/typescript-interview-questions
+- Shadecoder — TypeScript Interview Questions 2026 — https://www.shadecoder.com/blogs/typescript-interview-questions-in-2026
+- GreatFrontEnd — TypeScript Interview Questions — https://www.greatfrontend.com/questions/typescript-interview-questions
+- Frontend Interview Handbook 2026 — https://www.frontendinterviewhandbook.com/introduction
+- GeeksforGeeks — 50+ TypeScript Interview Questions — https://www.geeksforgeeks.org/typescript/typescript-interview-questions/
+- InterviewBit — TypeScript Interview Questions — https://www.interviewbit.com/typescript-interview-questions/
+- Turing — 100 TypeScript Interview Questions for 2025 — https://www.turing.com/interview-questions/typescript
+- CoderPad — 25+ TypeScript Interview Questions — https://coderpad.io/interview-questions/typescript-interview-questions/
+- Devinterview-io — TypeScript Interview Questions (GitHub) — https://github.com/Devinterview-io/typescript-interview-questions
+- Edureka — Top 50 TypeScript Interview Questions 2025 — https://www.edureka.co/blog/interview-questions/typescript-interview-questions/
+- Hackr.io — Top 50 TypeScript Interview Questions 2026 — https://hackr.io/blog/typescript-interview-questions-and-answers
+
+**Deep-dive blogs / authoritative explainers**
+- Total TypeScript — Type Predicate Inference — https://www.totaltypescript.com/type-predicate-inference
+- Total TypeScript — Clarifying `satisfies` — https://www.totaltypescript.com/clarifying-the-satisfies-operator
+- Total TypeScript — `erasableSyntaxOnly` — https://www.totaltypescript.com/erasable-syntax-only
+- Total TypeScript — DeepPartial workshop — https://www.totaltypescript.com/workshops/type-transformations/challenges/construct-a-deep-partial-of-an-object/solution
+- Effective TypeScript — In defense of `interface` — https://effectivetypescript.com/2021/06/03/interface/
+- Effective TypeScript — Inferring a Type Predicate — https://effectivetypescript.com/2024/04/16/inferring-a-type-predicate/
+- Frontend Masters — `satisfies` in TypeScript — https://frontendmasters.com/blog/satisfies-in-typescript/
+- 2ality — The `satisfies` operator — https://2ality.com/2025/02/satisfies-operator.html
+- amillionmonkeys — TS 5.5 Inferred Type Predicates — https://www.amillionmonkeys.co.uk/blog/typescript-55-inferred-type-predicates
+- LogRocket — Modern decorators in TypeScript — https://blog.logrocket.com/using-modern-decorators-typescript/
+- LogRocket — Understanding `infer` — https://blog.logrocket.com/understanding-infer-typescript/
+- Angular Experts — TS 5 decorators — https://angularexperts.io/blog/typescript-decorators/
+- Alexey Berezin — Typed `get` for object paths — https://blog.beraliv.dev/2021-03-26-typed-get
+- DEV — UnionToIntersection ELI5 — https://dev.to/anuraghazra/explain-like-im-five-typescript-uniontointersection-type-5ako
+- DEV — TS Project References (11min → 3min) — https://dev.to/gabrielanhaia/typescript-project-references-11-minute-builds-down-to-3-2kif
+- DEV — Zod 4 vs Valibot vs ArkType teardown — https://dev.to/gabrielanhaia/zod-4-vs-valibot-vs-arktype-a-type-system-teardown-4lha
+- TypeOfNaN — DeepPartial — https://typeofnan.dev/creating-your-own-deeppartial-type-in-typescript/
+- FullStory — Discriminated unions & exhaustiveness — https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/
+- Stanza — Nominal/branded types — https://www.stanza.dev/courses/typescript-architecture/branded-types/typescript-architecture-nominal-typing
+- Learning TypeScript — Branded types — https://www.learningtypescript.com/articles/branded-types
+
+**Performance / build / migration / runtime validation**
+- TypeScript Performance Wiki — https://github.com/microsoft/TypeScript/wiki/Performance
+- Steve Kinney — TS performance in large codebases — https://stevekinney.com/courses/react-typescript/typescript-performance-large-codebases
+- TS Handbook — Migrating from JavaScript — https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html
+- Airbnb Engineering — `ts-migrate` — https://medium.com/airbnb-engineering/ts-migrate-a-tool-for-migrating-to-typescript-at-scale-cd23bfeb5cc
+- arshadyaseen — Isolated Declarations — https://www.arshadyaseen.com/writing/isolated-declarations
+- Pockit — Zod vs Valibot vs ArkType 2026 — https://pockit.tools/blog/zod-valibot-arktype-comparison-2026/
+
+**Latest-feature primary references (TS 5.x)**
+- Announcing TypeScript 5.8 — https://devblogs.microsoft.com/typescript/announcing-typescript-5-8/
+- Announcing TypeScript 5.9 — https://devblogs.microsoft.com/typescript/announcing-typescript-5-9/
+- InfoQ — TS 5.4 `NoInfer` — https://www.infoq.com/news/2024/02/typescript-5-4-beta-release/
+- SitePoint — TS 5.8 Erasable Syntax — https://www.sitepoint.com/typescript-58-erasable-syntax-running-ts-directly-in-nodejs/
+- V8 — Import attributes — https://v8.dev/features/import-attributes
+- Architecture Weekly — TS migrates to Go (what's really behind the 10x) — https://www.architecture-weekly.com/p/typescript-migrates-to-go-whats-really
+- SD Times — TS 5.0 ECMAScript decorators — https://sdtimes.com/microsoft/typescript-5-0-implements-new-ecmascript-decorators-standard/
+
 ---
 
 **Bonus answer — Q3 `UnionToIntersection`:**
