@@ -1,275 +1,392 @@
-# The TypeScript Compiler (and its Configuration)
+# The TypeScript Compiler and `tsconfig.json`
 
-### Useful Resources & Links
+This chapter covers compiler invocation, the most important `tsconfig.json` options, and recommended modern defaults (TypeScript 5.x, 2026).
 
-- [tsconfig Docs](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-- [Compiler Config Docs](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
-- [VS Code TS Debugging](https://code.visualstudio.com/docs/typescript/typescript-debugging)
+### Useful Resources
 
-### Using "Watch Mode"
-
-Now, each time you want to compile `app.ts` file we do `tsc app.ts`.
-
-`tsc app.ts --watch` or `tsc app.ts -w` is going to compile this specific file each time we save it.
+- [TSConfig Reference](https://www.typescriptlang.org/tsconfig/) — the canonical option list
+- [TS Handbook — TSConfig basics](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+- [Compiler options on the CLI](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+- [Node.js: TypeScript support](https://nodejs.org/api/typescript.html)
 
 ---
 
-### Compiling the Entire Project / Multiple Files
+## Running the compiler
 
-`tsc --init` in the root of the project. And it creates `tsconfig.json` file.
-
-> Note: if you've installed `typescript` locally on your machine, you can do: `npx tsc --init` to create the `tsconfig.json` file.
-
-As soon as you have set up `tsconfig.json` file, you can run `tsc` and it will compile all your TypeScript files.
-
-```js
-{
-  "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
-    /* Basic Options */
-    // "incremental": true,                   /* Enable incremental compilation */
-    "target": "es5" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
-    "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
-    // "lib": [],                             /* Specify library files to be included in the compilation. */
-    // "allowJs": true,                       /* Allow javascript files to be compiled. */
-    // "checkJs": true,                       /* Report errors in .js files. */
-    // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
-    // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
-    // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-    // "sourceMap": true,                     /* Generates corresponding '.map' file. */
-    // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    // "outDir": "./",                        /* Redirect output structure to the directory. */
-    // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-    // "composite": true,                     /* Enable project compilation */
-    // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
-    // "removeComments": true,                /* Do not emit comments to output. */
-    // "noEmit": true,                        /* Do not emit outputs. */
-    // "importHelpers": true,                 /* Import emit helpers from 'tslib'. */
-    // "downlevelIteration": true,            /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
-    // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
-
-    /* Strict Type-Checking Options */
-    "strict": true /* Enable all strict type-checking options. */,
-    // "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
-    // "strictNullChecks": true,              /* Enable strict null checks. */
-    // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
-    // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
-    // "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
-    // "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
-    // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
-
-    /* Additional Checks */
-    // "noUnusedLocals": true,                /* Report errors on unused locals. */
-    // "noUnusedParameters": true,            /* Report errors on unused parameters. */
-    // "noImplicitReturns": true,             /* Report error when not all code paths in function return a value. */
-    // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
-
-    /* Module Resolution Options */
-    // "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    // "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
-    // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
-    // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
-    // "typeRoots": [],                       /* List of folders to include type definitions from. */
-    // "types": [],                           /* Type declaration files to be included in compilation. */
-    // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
-    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
-    // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
-    // "allowUmdGlobalAccess": true,          /* Allow accessing UMD globals from modules. */
-
-    /* Source Map Options */
-    // "sourceRoot": "",                      /* Specify the location where debugger should locate TypeScript files instead of source locations. */
-    // "mapRoot": "",                         /* Specify the location where debugger should locate map files instead of generated locations. */
-    // "inlineSourceMap": true,               /* Emit a single file with source maps instead of having a separate file. */
-    // "inlineSources": true,                 /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
-
-    /* Experimental Options */
-    // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
-    // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
-
-    /* Advanced Options */
-    "skipLibCheck": true /* Skip type checking of declaration files. */,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
-  }
-}
+```sh
+npx tsc app.ts          # one file
+npx tsc --watch         # watch all files in tsconfig.json
+npx tsc                 # build all files according to tsconfig.json
+npx tsc -b              # project-references build mode (monorepos)
+npx tsc --init          # generate a starter tsconfig.json
 ```
+
+> Most modern projects don't run `tsc` for emitting JS — Vite/esbuild/swc handle that. They run `tsc --noEmit` only for type-checking.
+
+For tiny scripts you can skip `tsc` entirely:
+- **Node 22.6+**: `node --experimental-strip-types script.ts` runs TS by stripping types.
+- **Node 23.6+**: stripping is on by default, no flag.
+- **Bun / Deno**: run `.ts` files natively.
+- **`tsx`**: a popular CLI that wraps esbuild for instant TS execution: `tsx script.ts`.
 
 ---
 
-### Including & Excluding Files
+## A modern starter `tsconfig.json`
 
-```js
+This is what `tsc --init` produces in TS 5.x (paraphrased and trimmed). Each line is annotated.
+
+```jsonc
 {
   "compilerOptions": {
-    //...
-    "target": "es5",
-    "module": "commonjs"
-    //...
-    /* Advanced Options */
-    //...
-  },
-  "exclude": [
-    "node_modules",
-    "analytics.dev.ts",
-    "*.dev.ts"
-  ] /* if you add any exclude, you should specify node_modules ortherwise it does it by default */,
-  "include": [
-    "app.ts"
-  ] /* if you use include, we need to include ALL the files/folders we want */,
-  "files": [
-    "app.js"
-  ] /* files is similar to include but only accept files and not folders */
-}
-```
+    // Language target. ES2022 is a safe default for Node 18+ and modern browsers.
+    // Use ESNext only if you control the runtime fully.
+    "target": "ES2022",
 
----
+    // Emit module format. Pair with moduleResolution below.
+    //   "nodenext" — Node ESM/CJS, respects package.json "exports"
+    //   "esnext"   — bundlers (Vite, webpack, esbuild) — paired with moduleResolution: "bundler"
+    "module": "ESNext",
 
-### Setting a Compilation Target
+    // How to resolve `import 'x'`. Five values exist:
+    //   "classic"  — legacy, never use
+    //   "node10"   — being deprecated (was "node"); TS still accepts it
+    //   "node16"   — Node ESM/CJS rules pinned to Node 16 semantics
+    //   "nodenext" — same, tracking the latest Node release
+    //   "bundler"  — for Vite/webpack/esbuild; pairs with module: "esnext" or "preserve"
+    "moduleResolution": "bundler",
 
-```js
-{
-  "compilerOptions": {
-    //...
-    "target": "es5",
-    "module": "commonjs"
-    //...
-  }
-}
-```
+    // The lib types the compiler knows about. Defaults follow `target` but can be overridden.
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
 
-`"target": "es5",` means all our typescript code is compiled in `es5`, but you could change to (ctrl + space) and let Babel or other to choose how to transpile your JS code.
+    "jsx": "react-jsx",                // for React projects on the automatic JSX runtime
+    "useDefineForClassFields": true,   // default since 4.7 when target >= ES2022
 
-### Understanding TypeScript Core Libs
+    // ----- type checking -----
+    "strict": true,                    // turns on the family below (see § Strict)
+    "noUncheckedIndexedAccess": true,  // arr[i] is T | undefined — catches index bugs
+    "exactOptionalPropertyTypes": true,// {a?: string} forbids explicit `: undefined`
+    "noImplicitOverride": true,        // require `override` keyword on subclass overrides
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
 
-```js
-{
-  "compilerOptions": {
-    //...
-    "lib": [
-      "dom",
-      "es6",
-      "dom.iterable",
-      "scripthost"
-    ] /* this is the default value included with es6 target */
-    //...
-  }
-}
-```
+    // ----- modules/emit ergonomics -----
+    "esModuleInterop": true,           // sane CJS default-import semantics
+    "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": true,      // TS 5.0+ — supersedes importsNotUsedAsValues + preserveValueImports
+    "isolatedModules": true,           // safe for single-file transpilers
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,              // skip checking node_modules .d.ts; recommended
 
-`lib` is an option that allow us to specify which default objects and features typescript knows. For example: `dom`, `window`,...
-
-The default objects and features available will depend on your `target`.
-
----
-
-### Working with Source Maps
-
-`SourceMap` helps us with debugging and development.
-
-The map files generated act as a **bridge** in the modern browsers and the developer tools to connect the JS files to the input TS files. **We can even breakpoint in our TS file.**
-
-```js
-{
-  "compilerOptions": {
-    //...
-    "sourceMap": true
-    //...
-  }
-}
-```
-
----
-
-### rootDir and outDir
-
-A good prcatice is to set up a `src` folder with all the TS files (and folders) and a `dist` folder where all the JS file compiled/generated are.
-
-```js
-{
-  "compilerOptions": {
-    //...
+    // ----- emit -----
     "outDir": "./dist",
-    "rootDir": "./src"
-    //...
-  }
+    "rootDir": "./src",
+    "sourceMap": true,
+    "declaration": true,               // emit .d.ts alongside .js for libraries
+    "noEmit": false,                   // set true when a bundler does emit
+
+    // ----- incremental -----
+    "incremental": true                // cache compile results in .tsbuildinfo
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
 ```
 
 ---
 
-### Stop Emitting Files on Compilation Errors
+## `target` — language output
 
-`noEmitOnError` prevents code to be compiled if there is an error.
+`target` controls what JavaScript syntax the compiler emits. Pick the **lowest** runtime you must support:
 
-```js
+| Runtime | Target |
+|---------|--------|
+| Node 18+ | `ES2022` |
+| Node 20+ | `ES2023` |
+| Last-2 evergreen browsers | `ES2022` |
+| IE11 (rare today) | `ES5` |
+| Bundler picks the down-level | `ESNext` |
+
+`ES5` (the old `tsc --init` default) is now legacy and forces `tsc` to polyfill things like `class`, `async/await`, optional chaining. Avoid it unless you really need it.
+
+---
+
+## `module` × `moduleResolution`
+
+These two work as a pair. Common combinations:
+
+| Use case | `module` | `moduleResolution` |
+|---------|---------|--------------------|
+| Vite/webpack/esbuild app | `ESNext` (or `Preserve`) | `bundler` |
+| Modern Node ESM library | `NodeNext` | `NodeNext` |
+| Modern Node CJS library | `NodeNext` | `NodeNext` (TS infers based on `package.json "type"`) |
+| Legacy CommonJS Node app | `CommonJS` | `Node10` |
+
+`bundler` only works with `module: "esnext"` or `"preserve"` — TS rejects other combinations.
+
+---
+
+## Strict mode breakdown (TS 5.6+)
+
+`"strict": true` enables the following family:
+
+- `alwaysStrict` — emit `"use strict"`
+- `noImplicitAny`
+- `noImplicitThis`
+- `strictBindCallApply`
+- `strictBuiltinIteratorReturn` *(TS 5.6+)*
+- `strictFunctionTypes`
+- `strictNullChecks`
+- `strictPropertyInitialization`
+- `useUnknownInCatchVariables` *(TS 4.4+)*
+
+The set grows over time — always check the [TSConfig Reference](https://www.typescriptlang.org/tsconfig/#strict) for your version.
+
+### Extra strict-ish flags worth turning on
+
+- **`noUncheckedIndexedAccess`** — `arr[i]` becomes `T | undefined`. Catches off-by-one and missing-key bugs that `strict` lets through.
+- **`exactOptionalPropertyTypes`** — `{ a?: string }` means "may be missing OR exactly `string`" — assigning `undefined` is rejected. Tightens optional-property semantics.
+- **`noImplicitOverride`** — subclass methods must use the `override` keyword.
+- **`noPropertyAccessFromIndexSignature`** — forces `obj['x']` (bracket) instead of `obj.x` (dot) for index-signature reads.
+
+None of these are in `strict`; you opt in.
+
+---
+
+## `verbatimModuleSyntax` (TS 5.0)
+
+Replaces `importsNotUsedAsValues` and `preserveValueImports`. With it on:
+
+- An import or export **without** `type` is preserved verbatim in emit.
+- An import or export **with** `type` is erased entirely.
+
+```ts
+import type { User } from './user';   // erased
+import { db } from './db';            // kept
+export type { Result } from './result'; // erased
+```
+
+This makes single-file transpilers (esbuild, swc, Babel) behave the same as `tsc` for module syntax.
+
+---
+
+## `isolatedModules`
+
+Required (or strongly recommended) for any pipeline that processes files independently — Vite, esbuild, swc, Babel, native Node stripping. It bans constructs that need cross-file knowledge:
+
+- References to `const enum` members declared in another file.
+- Non-module files that use `namespace` for values.
+- Re-exporting types without `export type` (when paired with `verbatimModuleSyntax`).
+
+---
+
+## `erasableSyntaxOnly` (TS 5.8)
+
+Goes a step further than `isolatedModules` — bans constructs that **can't be erased to plain JS** at all:
+
+- `enum`
+- `namespace` with values
+- `class` parameter properties (`constructor(public x: number)`)
+- `import =` / `export =`
+
+This is the flag you turn on if you want your code to run under Node's `--experimental-strip-types`. The trade-off: you give up some TS-specific runtime features.
+
+---
+
+## `rewriteRelativeImportExtensions` (TS 5.7)
+
+Rewrites `.ts`/`.tsx`/`.mts`/`.cts` to `.js`/`.jsx`/`.mjs`/`.cjs` in **relative** imports at emit time. Useful when:
+
+- You want to write `import x from './foo.ts'` (which Node's native TS support wants) but emit valid JS.
+- You target Bun/Deno + Node from the same source.
+
+Works regardless of `module` setting.
+
+---
+
+## `useDefineForClassFields`
+
+Default `true` when `target >= ES2022` (since TS 4.7). Aligns class-field semantics with the ECMAScript spec — fields are defined with `[[Define]]`, not `[[Set]]`. Mostly invisible unless you have subclass-getter/setter chains.
+
+Required `true` if you use [Stage-3 decorators](../6.Decorators/README6.md).
+
+---
+
+## `incremental` and project references
+
+```jsonc
 {
   "compilerOptions": {
-    //...
-    "noEmitOnError": true /* default is false */
-    //...
+    "incremental": true,
+    "tsBuildInfoFile": "./.tsbuildinfo"   // optional — TS picks a sensible default if omitted
   }
+}
+```
+
+`incremental` writes `.tsbuildinfo` on disk so subsequent `tsc` runs only recheck what changed. Speed up further with **project references**:
+
+```jsonc
+// tsconfig.json (root)
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/web" }
+  ]
+}
+```
+
+Each referenced project gets `"composite": true` and is built with `tsc -b`. Real monorepos can move from minutes to seconds with this layout.
+
+---
+
+## `include` / `exclude` / `files`
+
+- `include` — globs of files to compile (default `**/*` if absent).
+- `exclude` — globs to skip. `node_modules`, `bower_components`, `jspm_packages`, and `outDir` are excluded by default.
+- `files` — explicit list, no globs.
+
+If you specify `include`, you must include **every** entry you want.
+
+```jsonc
+{
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "**/*.stories.tsx"]
 }
 ```
 
 ---
 
-### Strict Compilation
+## Source maps
 
-```js
+```jsonc
 {
   "compilerOptions": {
-    //...
-    "strict": true /* Enable all strict type-checking options. */
-    //...
+    "sourceMap": true,             // emit .js.map files
+    "inlineSourceMap": false,      // or fold them into the .js (avoid in production)
+    "inlineSources": false,        // embed TS source in the map
+    "declarationMap": true         // .d.ts.map — lets editors jump to .ts from .d.ts
   }
 }
 ```
 
+`sourceMap` plus a debugger (Chrome devtools, VS Code, JetBrains) lets you set breakpoints directly in `.ts` files.
+
 ---
 
-### Code Quality Options
+## Stop emitting on errors
 
-It is a good practice to put keep them at `true` (default value).
+```jsonc
+{ "compilerOptions": { "noEmitOnError": true } }
+```
 
-```js
+Default is `false` — TS will emit JS even when there are type errors. Set `true` to keep broken JS out of your `dist/`.
+
+---
+
+## Quality-of-life flags
+
+```jsonc
 {
   "compilerOptions": {
-    //...
-    "noUnusedLocals": true /* Report errors on unused locals. */,
-    "noUnusedParameters": true /* Report errors on unused parameters. */,
-    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
-    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */
-    //...
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
 ```
 
+These are not part of `strict` but most teams turn them on.
+
 ---
 
-### Debugging with Visual Studio Code
+## Debugging TS in VS Code
 
-1. Install **Debugger for Chrome** extension.
-2. Go to Debug and create a config file for "Chrome".
-3. You should see:
+For a Node script:
 
-```js
+```jsonc
+// .vscode/launch.json
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "chrome",
+      "type": "node",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000", // same as the server you're running
-      "webRoot": "${workspaceFolder}"
+      "name": "Run script with tsx",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tsx",
+      "program": "${workspaceFolder}/src/index.ts",
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }
 ```
 
-4. Add a breakpoint somewhere. It should work!
+For a Vite app: just use the **JavaScript Debugger** built into VS Code with the browser. With `sourceMap: true` in your tsconfig, breakpoints in `.ts(x)` files work directly.
 
-Note: the port for the `url` has to be the same as your current server.
+---
+
+## Reference: minimal `tsconfig.json` per project type
+
+### Vite + React + TS
+
+```jsonc
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "useDefineForClassFields": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src"]
+}
+```
+
+### Node 22+ library (ESM, NodeNext)
+
+```jsonc
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
+```
+
+### Script run by `node --experimental-strip-types`
+
+```jsonc
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  }
+}
+```
